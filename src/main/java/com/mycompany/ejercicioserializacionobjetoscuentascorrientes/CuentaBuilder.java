@@ -5,19 +5,16 @@
  */
 package com.mycompany.ejercicioserializacionobjetoscuentascorrientes;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author a20armandocb
  */
-public class CuentaCorriente extends Cuenta{
-    private ArrayList<Movimiento> movimientos;
-    private double saldo;
+public class CuentaBuilder {
+    String numero = null;
+    String sucursal = null;
+    Cliente cliente = null;
 
-    public CuentaCorriente(String numero, String sucursal) {       
-        super(numero, sucursal);        
-        this.saldo = 0;
-    }
+    public CuentaBuilder() {
+    }    
     
 }

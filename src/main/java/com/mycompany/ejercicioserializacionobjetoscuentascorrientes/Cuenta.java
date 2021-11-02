@@ -17,10 +17,9 @@ public abstract class Cuenta implements Serializable{
     private String sucursal;
     private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
-    public Cuenta(String numero, String sucursal, Cliente cliente) {
+    public Cuenta(String numero, String sucursal) {
         this.numero = numero;
         this.sucursal = sucursal;
-        addCliente(cliente);
     }
 
     public String getNumero() {

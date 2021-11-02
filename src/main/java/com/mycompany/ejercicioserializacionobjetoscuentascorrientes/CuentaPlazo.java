@@ -5,6 +5,7 @@
  */
 package com.mycompany.ejercicioserializacionobjetoscuentascorrientes;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -16,8 +17,8 @@ public class CuentaPlazo extends Cuenta{
     private Date fechaVencimiento;
     private long depositoPlazo;
 
-    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal, Cliente cliente) {
-        super(numero, sucursal, cliente);
+    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal) {
+        super(numero, sucursal);
         this.intereses = intereses;
         this.fechaVencimiento = fechaVencimiento;
         this.depositoPlazo = depositoPlazo;
