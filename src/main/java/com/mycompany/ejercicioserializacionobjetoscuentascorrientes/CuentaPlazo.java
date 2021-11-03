@@ -17,8 +17,8 @@ public class CuentaPlazo extends Cuenta{
     private Date fechaVencimiento;
     private long depositoPlazo;
 
-    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal) {
-        super(numero, sucursal);
+    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal,ArrayList<Cliente> clientes) {
+        super(numero, sucursal,clientes);
         this.intereses = intereses;
         this.fechaVencimiento = fechaVencimiento;
         this.depositoPlazo = depositoPlazo;

@@ -15,11 +15,12 @@ import java.util.ArrayList;
 public abstract class Cuenta implements Serializable{
     private String numero;
     private String sucursal;
-    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    private ArrayList<Cliente> clientes;
 
-    public Cuenta(String numero, String sucursal) {
+    public Cuenta(String numero, String sucursal, ArrayList<Cliente> clientes) {
         this.numero = numero;
         this.sucursal = sucursal;
+        this.clientes = clientes;
     }
 
     public String getNumero() {
