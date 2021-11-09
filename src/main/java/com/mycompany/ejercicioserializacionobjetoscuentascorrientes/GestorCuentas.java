@@ -88,7 +88,7 @@ public class GestorCuentas {
         cuentaBuilder.addCliente(cliente);
     }
 
-    public boolean crearCuenta() {
+    public void crearCuenta() {
         boolean comprobacion = false;
         String numeroCuenta = "";
         String dniCliente;
@@ -96,8 +96,10 @@ public class GestorCuentas {
         String direccionCliente;
         String tipoCuenta;
         Cliente cliente;
+        Cuenta nuevaCuenta;
 
-        //parte de cuenta
+    //parte de cuenta
+        //indicar nº de cuenta
         while (numeroCuenta.equals("")) {
             numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta válido (5 dígitos + letra mayúscula)");
             if (comprobarNumeroCuentaValido(numeroCuenta)) {
@@ -111,20 +113,24 @@ public class GestorCuentas {
             }
         }
         cuentaBuilder.setNumero(numeroCuenta);
+        
+        //indicar ref de sucursal
         cuentaBuilder.setSucursal(EntradasGui.pedirString("Indíca la ref de la sucursal"));
         
+        // seleccion tipo de cuenta
         ArrayList<String> listaOpciones = new ArrayList<String>();
         listaOpciones.add(CuentaBuilder.CUENTA_CORRIENTE);
         listaOpciones.add(CuentaBuilder.CUENTA_PLAZO);
-        
         tipoCuenta = EntradasGui.pedirOpcion("Que tipo de cuenta", listaOpciones);
         JOptionPane.showMessageDialog(null, tipoCuenta);
         
-        //parte de cliente
+    //parte de cliente
+        //añadir cliente
         do {
             dniCliente = EntradasGui.pedirString("Indíca el dni del cliente");
             cliente = buscarClientePorDni(dniCliente);
             if (cliente == null) {
+            //cliente nuevo
                 JOptionPane.showMessageDialog(null, "El cliente No Existe.\n Creando nueva ficha.");
                 nombreCliente = EntradasGui.pedirString("Indíca el nombre del cliente");
                 direccionCliente = EntradasGui.pedirString("Indíca el nombre del cliente");
@@ -133,19 +139,25 @@ public class GestorCuentas {
             cuentaBuilder.addCliente(cliente);
         } while (EntradasGui.pedirBoolean("¿Quieres añadir otro cliente?"));
 
-        /**
-         * Para poder dar de alta una cuenta ,tendremos que comprobar que el
-         * número de cuenta
-         */
-        return comprobacion;
+        //construir cuenta plazo
+        if(tipoCuenta == CuentaBuilder.CUENTA_PLAZO){
+            cuentaBuilder.setDepositoPlazo(EntradasGui.pedirLong("Indíca el deposito que quieres ingresar"));        
+            cuentaBuilder.setIntereses(EntradasGui.pedirFloat("Indíca los intereses"));        
+            cuentaBuilder.setFechaVencimiento(EntradasGui.pedirFecha("Indíca la fecha de vencimiento"));        
+        }
+         guardarCuenta();
+        
+         
     }
 
-    private void guardarCuenta() throws Exception {
+    private void guardarCuenta(){
         Cuenta cuenta = cuentaBuilder.getCuenta();
         if (cuenta == null) {
-            throw new Exception(cuentaBuilder.getError());
+            JOptionPane.showMessageDialog(null, cuentaBuilder.getError());
+        //    throw new Exception(cuentaBuilder.getError());
+        }else{
+            cuentas.add(cuenta);        
         }
-        cuentas.add(cuenta);
     }
 
     public boolean comprobarNumeroCuentaValido(String numeroCuenta) {
@@ -243,5 +255,8 @@ public class GestorCuentas {
 
             }
         }
+    }
+    public void demo(){
+        //TODO cargar cuentas de ejemplo
     }
 }

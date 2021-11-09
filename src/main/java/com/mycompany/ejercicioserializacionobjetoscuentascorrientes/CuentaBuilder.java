@@ -87,9 +87,9 @@ public class CuentaBuilder {
         if (clientes.size() == 0) {
             error = "No hay clientes en la cuenta -- ";
         } else if (numero == null) {
-            error = "No hay se ha indicado un numero de cuenta -- ";
+            error = "No se ha indicado un numero de cuenta -- ";
         } else if (sucursal == null) {
-            error = "No hay se ha indicado una sucursal numero de cuenta -- ";
+            error = "No se ha indicado una sucursal numero de cuenta -- ";
         } else {
             switch (tipoCuenta) {
                 
@@ -99,18 +99,18 @@ public class CuentaBuilder {
 
                 case CUENTA_PLAZO:
                     if (!interesesInicializado) {
-                        error = "No hay clientes en la cuenta -- ";
+                        error = "No se han indicado loos intereses-- ";
                     } else if (fechaVencimiento == null) {
-                        error = "No hay se ha indicado un numero de cuenta -- ";
+                        error = "No se ha indicado la fecha de vencimiento -- ";
                     } else if (!depositoPlazoInicializado) {
-                        error = "No hay se ha indicado una sucursal numero de cuenta -- ";
+                        error = "No hay se ha indicado el deposito-- ";
                     } else {
                         cuenta = new CuentaPlazo(intereses, fechaVencimiento, depositoPlazo, numero, sucursal, clientes);
                     }
                     break;
                     
                 default:
-                    error += "No hay se ha indicado una sucursal numero de cuenta -- ";
+                    error = "No se ha indicado un tipo de cuenta válido: " + tipoCuenta;
                     break;
             }
         }

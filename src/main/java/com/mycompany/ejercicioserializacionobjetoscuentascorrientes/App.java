@@ -44,6 +44,7 @@ public class App {
         menu.addOpcion("Baja Cuenta Corriente");
         menu.addOpcion("Cargar fichero Cuentas");
         menu.addOpcion("Guardar fichero Cuentas");
+        menu.addOpcion("Demo - Cargar cuentas de ejemplo");
         
 
         return menu;
@@ -59,29 +60,27 @@ public class App {
                 System.out.println("Bye Bye!");
                 break;
             case 1:
-                System.out.println("Crear Cuenta");
                 gestor.crearCuenta();
-                
                 break;
             case 2:
-                System.out.println("Ejercicio 02");
              //   gestor.ejercicio02();
-                
                 break;
             case 3:
-                System.out.println("Ejercicio 03");
              //   gestor.ejercicio03();
                 break;
            
             case 4:
-                System.out.println("Ejercicio 04");
              //   gestor.ejercicio04();                
                 break;
            
             case 5:
-                System.out.println("Ejercicio 05");
             //    gestor.ejercicio05();
-                
+                break;
+            case 6:
+            //    gestor.ejercicio05();
+                break;
+            case 7:
+                gestor.demo();
                 break;
            
             default:
