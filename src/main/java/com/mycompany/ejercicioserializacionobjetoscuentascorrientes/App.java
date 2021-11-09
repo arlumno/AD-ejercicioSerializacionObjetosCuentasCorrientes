@@ -8,6 +8,7 @@ package com.mycompany.ejercicioserializacionobjetoscuentascorrientes;
 import ar.csdam.pr.libreriaar.Menu;
 import com.mycompany.ejercicioserializacionobjetoscuentascorrientes.GestorCuentas;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,13 +39,15 @@ public class App {
         Menu menu = new Menu(lector);
 
         menu.setTituloMenu("Menú para el Gestor de Cuentas Bancarias");
-        menu.addOpcion("Crear cuenta");
-        menu.addOpcion("Añadir Titular");
-        menu.addOpcion("Alta Movimientos");
-        menu.addOpcion("Baja Cuenta Corriente");
-        menu.addOpcion("Cargar fichero Cuentas");
-        menu.addOpcion("Guardar fichero Cuentas");
-        menu.addOpcion("Demo - Cargar cuentas de ejemplo");
+        
+        menu.addOpcion("Crear cuenta");//1
+        menu.addOpcion("*Añadir Titular");//2
+        menu.addOpcion("*Alta Movimientos");//3
+        menu.addOpcion("Eliminar Cuenta Corriente");//4
+        menu.addOpcion("*Cargar fichero Cuentas");//5
+        menu.addOpcion("Demo - Guardar cuentas de ejemplo");//6
+        menu.addOpcion("Listar Cuentas");        //7
+        menu.addOpcion("Guardar fichero Cuentas");//8
         
 
         return menu;
@@ -57,30 +60,39 @@ public class App {
             case 0:
                 //salir
                 continuar = false;
+                gestor.guardarFicheroCuentas();
                 System.out.println("Bye Bye!");
                 break;
             case 1:
                 gestor.crearCuenta();
                 break;
             case 2:
-             //   gestor.ejercicio02();
+                //añadir titular             
                 break;
             case 3:
-             //   gestor.ejercicio03();
+                //alta movimientos             
                 break;
            
             case 4:
-             //   gestor.ejercicio04();                
+                //Baja Cuenta Corriente
+                gestor.cuentaEliminar();
                 break;
            
             case 5:
-            //    gestor.ejercicio05();
+                //Cargar fichero Cuentas
                 break;
             case 6:
-            //    gestor.ejercicio05();
+                //Demo - Cargar cuentas de ejemplo
+                gestor.demo();
                 break;
             case 7:
-                gestor.demo();
+                //Listar Cuentas
+                System.out.println(gestor.cuentasToString());
+                 JOptionPane.showMessageDialog(null,gestor.cuentasToString());
+                break;
+            case 8:
+                //Guardar fichero Cuentas
+                gestor.guardarFicheroCuentas();
                 break;
            
             default:

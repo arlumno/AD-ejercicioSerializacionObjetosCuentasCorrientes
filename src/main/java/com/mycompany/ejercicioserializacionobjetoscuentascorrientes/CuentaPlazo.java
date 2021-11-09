@@ -12,16 +12,37 @@ import java.util.Date;
  *
  * @author a20armandocb
  */
-public class CuentaPlazo extends Cuenta{
+public class CuentaPlazo extends Cuenta {
+
     private float intereses;
     private Date fechaVencimiento;
+
     private long depositoPlazo;
 
-    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal,ArrayList<Cliente> clientes) {
-        super(numero, sucursal,clientes);
+    public CuentaPlazo(float intereses, Date fechaVencimiento, long depositoPlazo, String numero, String sucursal, ArrayList<Cliente> clientes) {
+        super(numero, sucursal, clientes);
         this.intereses = intereses;
         this.fechaVencimiento = fechaVencimiento;
         this.depositoPlazo = depositoPlazo;
     }
-    
+
+    public float getIntereses() {
+        return intereses;
+    }
+
+    public long getDepositoPlazo() {
+        return depositoPlazo;
+    }
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() 
+                + " Deposito: " + getDepositoPlazo()
+                + " Intereses: " + getIntereses()
+                + " Vencimiento: " + getFechaVencimiento().toString();
+    }
 }

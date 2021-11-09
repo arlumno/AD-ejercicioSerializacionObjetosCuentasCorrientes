@@ -15,9 +15,20 @@ public class CuentaCorriente extends Cuenta{
     private ArrayList<Movimiento> movimientos;
     private double saldo;
 
+
     public CuentaCorriente(String numero, String sucursal,ArrayList<Cliente> clientes) {       
         super(numero, sucursal, clientes);        
         this.saldo = 0;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() 
+                + " Saldo: " + getSaldo();
     }
     
 }

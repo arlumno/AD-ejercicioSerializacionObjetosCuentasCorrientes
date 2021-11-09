@@ -99,7 +99,7 @@ public class CuentaBuilder {
 
                 case CUENTA_PLAZO:
                     if (!interesesInicializado) {
-                        error = "No se han indicado loos intereses-- ";
+                        error = "No se han indicado los intereses-- ";
                     } else if (fechaVencimiento == null) {
                         error = "No se ha indicado la fecha de vencimiento -- ";
                     } else if (!depositoPlazoInicializado) {

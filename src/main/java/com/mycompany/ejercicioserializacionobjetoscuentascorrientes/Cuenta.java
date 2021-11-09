@@ -12,7 +12,8 @@ import java.util.ArrayList;
  *
  * @author a20armandocb
  */
-public abstract class Cuenta implements Serializable{
+public abstract class Cuenta implements Serializable {
+
     private String numero;
     private String sucursal;
     private ArrayList<Cliente> clientes;
@@ -47,11 +48,24 @@ public abstract class Cuenta implements Serializable{
         this.clientes = clientes;
     }
 
-    private void addCliente(Cliente cliente) {
-        if(!clientes.contains(cliente)){            
+    public void addCliente(Cliente cliente) {
+        if (!clientes.contains(cliente)) {
             clientes.add(cliente);
             cliente.addCuenta(this);
         }
     }
-    
+    public String getClientesToString(){
+        StringBuilder resultado = new StringBuilder();
+        for(Cliente cliente: clientes){
+            resultado.append("\n  --(" + cliente.getNombre() + " - " + cliente.getDni()+ " - " + cliente.getDireccion());
+        }
+        return resultado.toString();
+    }
+    @Override
+    public String toString() {
+        return "Cuenta nº: " + getNumero() 
+                + "Clientes:" + getClientesToString() + "\n"
+                + " Sucursal: " + getSucursal();
+    }
+
 }
