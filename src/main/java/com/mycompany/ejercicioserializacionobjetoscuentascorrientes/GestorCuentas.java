@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -68,18 +69,10 @@ public class GestorCuentas {
             if (cliente == null) {
                 JOptionPane.showMessageDialog(null, "El cliente No Existe.");
             } else {
-                String direccion = EntradasGui.pedirString("Indique la nueva dirección:");
-                //realizar cambios en todos los clientes iguales
-                /*for(int i = 0; i<cuentas.size() ; i++){
-                    for(int e = 0; e < cuentas.get(i).getClientes().size() ; e++){
-                       
-                    }
-                }
-                 */
+                String direccion = EntradasGui.pedirString("Dirección actual:" + cliente.getDireccion() + "\nIndique la nueva dirección:");
                 cliente.setDireccion(direccion);
             }
         }
-
     }
 
     /**
@@ -213,13 +206,13 @@ public class GestorCuentas {
                     String opcion = EntradasGui.pedirOpcion(numeroCuenta, new ArrayList<>(Arrays.asList(CuentaCorriente.OPERACION_INGRESAR, CuentaCorriente.OPERACION_RETIRAR)));
                     switch (opcion) {
                         case CuentaCorriente.OPERACION_INGRESAR:
-                            ((CuentaCorriente)cuentas.get(i)).ingresar(EntradasGui.pedirDouble("Importe a ingresar",0));
+                            ((CuentaCorriente) cuentas.get(i)).ingresar(EntradasGui.pedirDouble("Importe a ingresar", 0));
                             break;
                         case CuentaCorriente.OPERACION_RETIRAR:
-                            double importe = EntradasGui.pedirDouble("Importe a retirar",0);
-                            if(((CuentaCorriente)cuentas.get(i)).getSaldo() >= importe){
-                                ((CuentaCorriente)cuentas.get(i)).retirar(importe);                                
-                            }else{
+                            double importe = EntradasGui.pedirDouble("Importe a retirar", 0);
+                            if (((CuentaCorriente) cuentas.get(i)).getSaldo() >= importe) {
+                                ((CuentaCorriente) cuentas.get(i)).retirar(importe);
+                            } else {
                                 JOptionPane.showMessageDialog(null, "No se puede realizar la operación. SALDO INSUFICIENTE");
                             }
                             break;
@@ -235,13 +228,20 @@ public class GestorCuentas {
         }
     }
 
+    /**
+     * Valida si el nº de cuenta cumple el patrón obligatorio
+     *
+     * @param numeroCuenta
+     * @return True si es correcto False si es no coincide.
+     */
     public boolean comprobarNumeroCuentaValido(String numeroCuenta) {
         return Pattern.compile("^[0-9]{5}[A-Z]{1}").matcher(numeroCuenta).matches();
     }
 
     /**
+     * Comprueba si la cuent existe
      *
-     * @param numeroCuenta referencia dew cuenta a buscar
+     * @param numeroCuenta referencia de cuenta a buscar
      * @return devuelve el indice dentro del ArrayList Cuentas, o -1 si no lo
      * encuentra
      */
@@ -255,16 +255,26 @@ public class GestorCuentas {
         return resultado;
     }
 
+    /**
+     * Listado de clientes
+     *
+     * @return ArrayList de clientes.
+     */
     public ArrayList<Cliente> clientes() {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         for (Cuenta cuenta : cuentas) {
             for (Cliente cliente : cuenta.getClientes()) {
-                clientes.add(cliente);
+                if (!clientes.contains(cliente)) {
+                    clientes.add(cliente);
+                }
             }
         }
         return clientes;
     }
 
+    /**
+     * Guarda el las cuenta en el fichero
+     */
     public void guardarFicheroCuentas() {
         if (cuentas.size() != 0) {
             File fichero = new File(rutaFicheros + nombreFichero);
@@ -306,6 +316,9 @@ public class GestorCuentas {
         }
     }
 
+    /**
+     * Carga las cuentas desde el fichero
+     */
     public void cargarFicherosCuentas() {
         if (cuentas == null || cuentas.size() == 0) {
             File fichero = new File(rutaFicheros + nombreFichero);
@@ -340,12 +353,14 @@ public class GestorCuentas {
     public void demo() {
         int cuentasEliminadas = cuentas.size();
         cuentas.clear();
+        //0
         cuentaBuilder.addCliente(new Cliente("12345678Z", "john doe", "cualquier sitios"));
         cuentaBuilder.setNumero("12345A");
         cuentaBuilder.setSucursal("florida");
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_CORRIENTE);
         guardarCuenta();
 
+        //1
         cuentaBuilder.addCliente(new Cliente("53170624Y", "Armando Castro", "calle undostres"));
         cuentaBuilder.setNumero("32345C");
         cuentaBuilder.setSucursal("noruega");
@@ -359,12 +374,14 @@ public class GestorCuentas {
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
 
+        //2
         cuentaBuilder.addCliente(new Cliente("12345670y", "Lorena Abalde", "Vigo"));
         cuentaBuilder.setNumero("12345L");
         cuentaBuilder.setSucursal("florida");
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_CORRIENTE);
         guardarCuenta();
 
+        //3
         cuentaBuilder.addCliente(new Cliente("12345679S", "Roberto", "Bruselas"));
         cuentaBuilder.setNumero("55345H");
         cuentaBuilder.setSucursal("noruega");
@@ -378,17 +395,106 @@ public class GestorCuentas {
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
 
+        ((CuentaCorriente) cuentas.get(2)).ingresar(100);
+        ((CuentaCorriente) cuentas.get(2)).retirar(25);
+        ((CuentaCorriente) cuentas.get(2)).ingresar(150);
+        ((CuentaCorriente) cuentas.get(2)).retirar(130);
+        ((CuentaCorriente) cuentas.get(2)).ingresar(400);
+
         int cuentasCargadas = cuentas.size();
-        JOptionPane.showMessageDialog(null, "Cuentas eliminadas" + cuentasEliminadas + "\nCuentas Demo cargadas: " + cuentasCargadas);
+        JOptionPane.showMessageDialog(null, "Cuentas eliminadas: " + cuentasEliminadas + "\nCuentas Demo cargadas: " + cuentasCargadas);
 
     }
 
-    public String cuentasToString() {
+    public void listarCuentas() {
         StringBuilder resutado = new StringBuilder();
         for (Cuenta cuenta : cuentas) {
             resutado.append(cuenta.toString() + "\n\n");
         }
-        return resutado.toString();
+
+        if (resutado.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay cuentas disponibles");
+        } else {
+            JOptionPane.showMessageDialog(null, resutado.toString());
+        }
+
     }
 
+    public void listarDatosCuenta() {
+        String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta a consultar.");
+        int index = buscarCuenta(numeroCuenta);
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "El numero de cuenta No Existe.");
+        } else {
+            JOptionPane.showMessageDialog(null, cuentas.get(index).toString());
+        }
+    }
+
+    public void listarCuentasCliente() {
+        StringBuilder resultado = new StringBuilder("Cuentas del cliente: \n");
+        String dniCliente = EntradasGui.pedirString("Indíca el dni del cliente");
+        dniCliente = Utils.validarYFormatearDni(dniCliente);
+        if (dniCliente == null) {
+            JOptionPane.showMessageDialog(null, "Formato de DNI NO Válido");
+        } else {
+            Cliente cliente = buscarClientePorDni(dniCliente);
+            if (cliente == null) {
+                JOptionPane.showMessageDialog(null, "El cliente No Existe.");
+            } else {
+                for (Cuenta cuenta : cuentas) {
+                    if (cuenta.getClientes().contains(cliente)) {
+                        resultado.append(" - " + cuenta.getNumero() + "\n");
+                        //listaCuentas.add(cuenta);
+                    }
+                }
+                JOptionPane.showMessageDialog(null, resultado.toString());
+            }
+        }
+    }
+
+    public void listarMovimientosCuentaEntreFechas() {
+        String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta para consultar sus movmientos.");
+        ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
+        StringBuilder listaMovimientos = new StringBuilder();
+
+        int index = buscarCuenta(numeroCuenta);
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "El numero de cuenta No Existe.");
+        } else {
+            if (cuentas.get(index) instanceof CuentaCorriente) {
+                movimientos = ((CuentaCorriente) cuentas.get(index)).getMovimientos();
+
+                if (movimientos.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "La Cuenta no tiene movmientos.");
+                } else {
+                    Date fechaInicio = EntradasGui.pedirFecha("Fecha de inicio");
+                    Date fechaFin = EntradasGui.pedirFecha("Fecha de fin");
+                    Date fo; //TODO . tiempo poner a 00:00:00
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    for (Movimiento movimiento : movimientos) {
+                        try {
+                            fo = movimiento.getFechaOperacion();
+                            fo = formato.parse(formato.format(fo));
+
+                            if ((fo.before(fechaFin) || fo.equals(fechaFin))
+                                    && (fo.after(fechaInicio) || fo.equals(fechaInicio))) {
+                                listaMovimientos.append(movimiento.toString() + "\n");
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, e);
+                        }
+                    }
+                    if (listaMovimientos.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay movimientos en las fechas indicadas");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Movimientos: \n" + listaMovimientos.toString());
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "La Cuenta debe ser Corriente para disponer de movimientos .");
+            }
+        }
+    }
 }

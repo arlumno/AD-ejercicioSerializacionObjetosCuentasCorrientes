@@ -46,16 +46,19 @@ public class App {
         menu.addOpcion("Eliminar Cuenta Corriente");//4
         menu.addOpcion("Modificar Cliente");//5
         menu.addOpcion("Demo - Guardar cuentas de ejemplo");//6
-        menu.addOpcion("Listar Cuentas");        //7
-        menu.addOpcion("Guardar fichero Cuentas");//8
+        menu.addOpcion("Listar Todas las Cuentas");        //7
+        menu.addOpcion("Listar Datos de Cuentas");//8
+        menu.addOpcion("Listar Cuentas de Clientes");//9
+        menu.addOpcion("Buscar Movimientos Cuenta");//9
         
+        menu.setTexoSalir("Guardar y Salir");
 
         return menu;
     }
 
     private static boolean menuAcciones(Menu menu, GestorCuentas gestor) throws Exception {
         boolean continuar = true;
-        menu.mostrarGUI();
+        menu.mostrarGUI();       
         switch (menu.getSeleccion()) {
             case 0:
                 //salir
@@ -89,15 +92,23 @@ public class App {
                 gestor.demo();
                 break;
             case 7:
-                //Listar Cuentas
-                System.out.println(gestor.cuentasToString());
-                 JOptionPane.showMessageDialog(null,gestor.cuentasToString());
+                //Listar Cuentas              
+                gestor.listarCuentas();
                 break;
             case 8:
-                //Guardar fichero Cuentas
-                gestor.guardarFicheroCuentas();
+                //Listar Datos de una Cuenta
+                 gestor.listarDatosCuenta();
+                
                 break;
-           
+            case 9:
+                //Listar Cuentas de un Cliente.
+                 gestor.listarCuentasCliente();
+                break;
+            case 10:
+                //Listar Movimientos cuenta
+                 gestor.listarMovimientosCuentaEntreFechas();
+                break;
+           //eliminar usuario de cuenta.
             default:
                 System.out.println("**Opcion incorrecta**");
                 break;

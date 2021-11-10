@@ -7,6 +7,7 @@ package com.mycompany.ejercicioserializacionobjetoscuentascorrientes;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,9 +15,34 @@ import java.util.Date;
  * @author a20armandocb
  */
 public class Movimiento implements Serializable{
-    String numeroCuenta;
+
+    
     Date fechaOperacion;
-    Time hora;
-    float cantidad;
-    double saldoActual;
+    //Time hora;
+    double cantidad;    
+    double saldoResultante;
+
+    public Movimiento(double cantidad, double saldoResultante) {        
+        //fechaOperacion = new Date(new java.util.Date().getTime());
+        fechaOperacion = new Date();
+        this.cantidad = cantidad;
+        this.saldoResultante = saldoResultante;
+            }
+    public Date getFechaOperacion() {
+        return fechaOperacion;
+    }
+
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    public double getSaldoResultante() {
+        return saldoResultante;
+    }
+    
+    @Override
+    public String toString(){   
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");        
+        return "[" + formato.format(fechaOperacion) + "] || "+ cantidad + "€  || " + saldoResultante + "€";
+    }
 }
