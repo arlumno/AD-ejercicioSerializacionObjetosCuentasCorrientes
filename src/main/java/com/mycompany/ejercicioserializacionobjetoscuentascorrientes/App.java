@@ -41,10 +41,10 @@ public class App {
         menu.setTituloMenu("Menú para el Gestor de Cuentas Bancarias");
         
         menu.addOpcion("Crear cuenta");//1
-        menu.addOpcion("*Añadir Titular");//2
-        menu.addOpcion("*Alta Movimientos");//3
+        menu.addOpcion("Añadir Titular");//2
+        menu.addOpcion("Alta Movimientos");//3
         menu.addOpcion("Eliminar Cuenta Corriente");//4
-        menu.addOpcion("*Cargar fichero Cuentas");//5
+        menu.addOpcion("Modificar Cliente");//5
         menu.addOpcion("Demo - Guardar cuentas de ejemplo");//6
         menu.addOpcion("Listar Cuentas");        //7
         menu.addOpcion("Guardar fichero Cuentas");//8
@@ -68,9 +68,11 @@ public class App {
                 break;
             case 2:
                 //añadir titular             
+                gestor.addClienteCuenta();
                 break;
             case 3:
-                //alta movimientos             
+                //alta movimientos       
+                gestor.altaMovimiento();
                 break;
            
             case 4:
@@ -79,7 +81,8 @@ public class App {
                 break;
            
             case 5:
-                //Cargar fichero Cuentas
+                //Modificar Cliente
+                gestor.modificarCliente();
                 break;
             case 6:
                 //Demo - Cargar cuentas de ejemplo

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class CuentaCorriente extends Cuenta{
     private ArrayList<Movimiento> movimientos;
     private double saldo;
+    public final static String OPERACION_RETIRAR = "Retirar";
+    public final static String OPERACION_INGRESAR = "Ingresar";
 
 
     public CuentaCorriente(String numero, String sucursal,ArrayList<Cliente> clientes) {       
@@ -24,11 +26,20 @@ public class CuentaCorriente extends Cuenta{
     public double getSaldo() {
         return saldo;
     }
-    
+    public void ingresar(double importe){
+        if(importe >0){
+            saldo += importe;
+        }
+    }
+    public void retirar(double importe){
+        if(importe >0){
+            saldo -= importe;
+        }
+    }
     @Override
     public String toString() {
         return super.toString() 
-                + " Saldo: " + getSaldo();
+                + "\n  Saldo: " + getSaldo();
     }
     
 }

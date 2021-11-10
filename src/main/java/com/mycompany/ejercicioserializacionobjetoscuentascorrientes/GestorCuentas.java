@@ -6,6 +6,7 @@
 package com.mycompany.ejercicioserializacionobjetoscuentascorrientes;
 
 import ar.csdam.pr.libreriaar.EntradasGui;
+import ar.csdam.pr.libreriaar.Utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -35,19 +36,6 @@ public class GestorCuentas {
         cargarFicherosCuentas();
     }
 
-    public Cliente crearCliente(String numeroCuenta) {
-        String dniCliente = EntradasGui.pedirString("Indíca el dni del cliente");
-        Cliente cliente = buscarClientePorDni(dniCliente);
-        if (cliente == null) {
-            //cliente nuevo
-            JOptionPane.showMessageDialog(null, "El cliente No Existe.\n Creando nueva ficha.");
-            String nombreCliente = EntradasGui.pedirString("Indíca el nombre del cliente");
-            String direccionCliente = EntradasGui.pedirString("Indíca la dirección del cliente");
-            cliente = new Cliente(dniCliente, nombreCliente, direccionCliente);
-        }
-        return cliente;
-    }
-
     /**
      * Comprueba si el cliente existe
      *
@@ -57,57 +45,86 @@ public class GestorCuentas {
     public Cliente buscarClientePorDni(String dni) {
         ArrayList<Cliente> clientes = clientes();
         Cliente cliente = null;
-        for (int i = 0; i < clientes.size() && cliente == null; i++) {
-            if (clientes.get(i).getDni().equals(dni)) {
-                cliente = clientes.get(i);
-            };
+        dni = Utils.validarYFormatearDni(dni);
+        if (dni == null) {
+            JOptionPane.showMessageDialog(null, "Formato de DNI NO Válido.");
+        } else {
+            for (int i = 0; i < clientes.size() && cliente == null; i++) {
+                if (clientes.get(i).getDni().equals(dni)) {
+                    cliente = clientes.get(i);
+                };
+            }
         }
         return cliente;
     }
 
-//    public void cuentaSetNumero(String numero) {
-//        cuentaBuilder.setNumero(numero);
-//    }
-//
-//    public void cuentaSetSucursal(String sucursal) {
-//        cuentaBuilder.setSucursal(sucursal);
-//    }
-//
-//    /**
-//     *
-//     * @param tipoCuenta Opciones Disponibles mediante constantes en
-//     * CuentaBuilder.CUENTA_
-//     */
-//    public void cuentaSetTipoCuenta(String tipoCuenta) {
-//        cuentaBuilder.setTipoCuenta(tipoCuenta);
-//    }
-//
-//    public void cuentasetIntereses(Float intereses) {
-//        cuentaBuilder.setIntereses(intereses);
-//    }
-//
-//    public void cuentaSetDepositoPlazo(Long depositoPlazo) {
-//        cuentaBuilder.setDepositoPlazo(depositoPlazo);
-//    }
-//
-//    public void cuentaSetFechaVencimiento(Date fechaVencimiento) {
-//        cuentaBuilder.setFechaVencimiento(fechaVencimiento);
-//    }
-//
-//    public void cuentaAddCliente(Cliente cliente) {
-//
-//        cuentaBuilder.addCliente(cliente);
-//    }
-    public void addClientecuenta() {
+    public void modificarCliente() {
+        String dniCliente = EntradasGui.pedirString("Indíca el dni del cliente");
+        dniCliente = Utils.validarYFormatearDni(dniCliente);
+        if (dniCliente == null) {
+            JOptionPane.showMessageDialog(null, "Formato de DNI NO Válido");
+        } else {
+            Cliente cliente = buscarClientePorDni(dniCliente);
+            if (cliente == null) {
+                JOptionPane.showMessageDialog(null, "El cliente No Existe.");
+            } else {
+                String direccion = EntradasGui.pedirString("Indique la nueva dirección:");
+                //realizar cambios en todos los clientes iguales
+                /*for(int i = 0; i<cuentas.size() ; i++){
+                    for(int e = 0; e < cuentas.get(i).getClientes().size() ; e++){
+                       
+                    }
+                }
+                 */
+                cliente.setDireccion(direccion);
+            }
+        }
+
+    }
+
+    /**
+     * Añade un cliente nuevo o existente a un nº de cuenta
+     */
+    public void addClienteCuenta() {
         String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta al que añadir el cliente");
         int index = buscarCuenta(numeroCuenta);
         if (index == -1) {
-            JOptionPane.showMessageDialog(null, "El numero de cuenta No Existe.");            
-        }else{
-            Cliente cliente = crearCliente(numeroCuenta);
+            JOptionPane.showMessageDialog(null, "El numero de cuenta No Existe.");
+        } else {
+            Cliente cliente = crearCliente();
             cuentas.get(index).addCliente(cliente);
+            JOptionPane.showMessageDialog(null, "Se ha añadido el títular al nº de cuenta ." + numeroCuenta);
         }
-       
+
+    }
+
+    /**
+     * Pide un DNI Válido y busca si ya existe, si no lo encuentra, crea uno
+     * nuevo.
+     *
+     * @return devuelve el Cliente encontrado o el Cliente creado
+     */
+    public Cliente crearCliente() {
+        String dniCliente = null;
+        boolean pedirDni = true;
+        while (pedirDni) {
+            dniCliente = EntradasGui.pedirString("Indíca el dni del cliente");
+            dniCliente = Utils.validarYFormatearDni(dniCliente);
+            if ((dniCliente == null)) {
+                JOptionPane.showMessageDialog(null, "Formato de DNI NO Válido, Vuelva a intentarlo");
+            } else {
+                pedirDni = false;
+            }
+        }
+        Cliente cliente = buscarClientePorDni(dniCliente);
+        if (cliente == null) {
+            //cliente nuevo
+            JOptionPane.showMessageDialog(null, "El cliente No Existe.\n Creando nueva ficha.");
+            String nombreCliente = EntradasGui.pedirString("Indíca el nombre del cliente");
+            String direccionCliente = EntradasGui.pedirString("Indíca la dirección del cliente");
+            cliente = new Cliente(dniCliente, nombreCliente, direccionCliente);
+        }
+        return cliente;
     }
 
     public void crearCuenta() {
@@ -141,7 +158,7 @@ public class GestorCuentas {
 
         //parte de cliente
         do {
-            cliente = crearCliente(numeroCuenta);
+            cliente = crearCliente();
             cuentaBuilder.addCliente(cliente);
         } while (EntradasGui.pedirBoolean("¿Quieres añadir otro cliente?"));
 
@@ -162,6 +179,7 @@ public class GestorCuentas {
             //    throw new Exception(cuentaBuilder.getError());
         } else {
             cuentas.add(cuenta);
+            cuentaBuilder = new CuentaBuilder(); // para destruir el anterior objeto
         }
     }
 
@@ -185,18 +203,51 @@ public class GestorCuentas {
 
     }
 
+    public void altaMovimiento() {
+        String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta para operar.");
+        boolean encontrado = false;
+        for (int i = 0; i < cuentas.size() && !encontrado; i++) {
+            if (cuentas.get(i).getNumero().equals(numeroCuenta)) {
+                encontrado = true;
+                if (cuentas.get(i) instanceof CuentaCorriente) {
+                    String opcion = EntradasGui.pedirOpcion(numeroCuenta, new ArrayList<>(Arrays.asList(CuentaCorriente.OPERACION_INGRESAR, CuentaCorriente.OPERACION_RETIRAR)));
+                    switch (opcion) {
+                        case CuentaCorriente.OPERACION_INGRESAR:
+                            ((CuentaCorriente)cuentas.get(i)).ingresar(EntradasGui.pedirDouble("Importe a ingresar",0));
+                            break;
+                        case CuentaCorriente.OPERACION_RETIRAR:
+                            double importe = EntradasGui.pedirDouble("Importe a retirar",0);
+                            if(((CuentaCorriente)cuentas.get(i)).getSaldo() >= importe){
+                                ((CuentaCorriente)cuentas.get(i)).retirar(importe);                                
+                            }else{
+                                JOptionPane.showMessageDialog(null, "No se puede realizar la operación. SALDO INSUFICIENTE");
+                            }
+                            break;
+                    }
+                    //JOptionPane.showMessageDialog(null, "Cuenta eliminada");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las cuentas a plazo no permiten operaciones de saldo");
+                }
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "El nº de cuenta no figura en nuestra base de datos.");
+        }
+    }
+
     public boolean comprobarNumeroCuentaValido(String numeroCuenta) {
         return Pattern.compile("^[0-9]{5}[A-Z]{1}").matcher(numeroCuenta).matches();
     }
 
     /**
-     * 
+     *
      * @param numeroCuenta referencia dew cuenta a buscar
-     * @return devuelve el indice dentro del ArrayList Cuentas, o -1 si no lo encuentra
+     * @return devuelve el indice dentro del ArrayList Cuentas, o -1 si no lo
+     * encuentra
      */
     public int buscarCuenta(String numeroCuenta) {
         int resultado = -1;
-        for (int i = 0; i <cuentas.size();i++) {
+        for (int i = 0; i < cuentas.size(); i++) {
             if (cuentas.get(i).getNumero().equals(numeroCuenta)) {
                 resultado = i;
             }
@@ -282,39 +333,60 @@ public class GestorCuentas {
                         JOptionPane.showMessageDialog(null, "Error al cerrar el flujo " + e.toString());
                     }
                 }
-            } else {
-                //  JOptionPane.showMessageDialog(null, "El archivo " + rutaFicheros + nombreFichero + " NO existe ");
-
             }
         }
     }
 
     public void demo() {
+        int cuentasEliminadas = cuentas.size();
+        cuentas.clear();
         cuentaBuilder.addCliente(new Cliente("12345678Z", "john doe", "cualquier sitios"));
         cuentaBuilder.setNumero("12345A");
         cuentaBuilder.setSucursal("florida");
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_CORRIENTE);
         guardarCuenta();
 
-        cuentaBuilder.addCliente(new Cliente("53170624Y", "Paco doe", "navarra"));
-        cuentaBuilder.setNumero("32345J");
+        cuentaBuilder.addCliente(new Cliente("53170624Y", "Armando Castro", "calle undostres"));
+        cuentaBuilder.setNumero("32345C");
         cuentaBuilder.setSucursal("noruega");
         cuentaBuilder.setIntereses(2.3F);
+        cuentaBuilder.setDepositoPlazo(15000L);
+        try {
+            cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("05/02/2026"));
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
+        guardarCuenta();
+
+        cuentaBuilder.addCliente(new Cliente("12345670y", "Lorena Abalde", "Vigo"));
+        cuentaBuilder.setNumero("12345L");
+        cuentaBuilder.setSucursal("florida");
+        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_CORRIENTE);
+        guardarCuenta();
+
+        cuentaBuilder.addCliente(new Cliente("12345679S", "Roberto", "Bruselas"));
+        cuentaBuilder.setNumero("55345H");
+        cuentaBuilder.setSucursal("noruega");
+        cuentaBuilder.setIntereses(5.4F);
         cuentaBuilder.setDepositoPlazo(20000L);
         try {
             cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("21/12/2021"));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
+
+        int cuentasCargadas = cuentas.size();
+        JOptionPane.showMessageDialog(null, "Cuentas eliminadas" + cuentasEliminadas + "\nCuentas Demo cargadas: " + cuentasCargadas);
+
     }
 
     public String cuentasToString() {
         StringBuilder resutado = new StringBuilder();
         for (Cuenta cuenta : cuentas) {
-            resutado.append(cuenta.toString() + "\n");
+            resutado.append(cuenta.toString() + "\n\n");
         }
         return resutado.toString();
     }

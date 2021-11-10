@@ -57,15 +57,15 @@ public abstract class Cuenta implements Serializable {
     public String getClientesToString(){
         StringBuilder resultado = new StringBuilder();
         for(Cliente cliente: clientes){
-            resultado.append("\n  --(" + cliente.getNombre() + " - " + cliente.getDni()+ " - " + cliente.getDireccion());
+            resultado.append("\n   ---  " + cliente.getNombre() + " - " + cliente.getDni()+ " - " + cliente.getDireccion());
         }
         return resultado.toString();
     }
     @Override
     public String toString() {
         return "Cuenta nº: " + getNumero() 
-                + "Clientes:" + getClientesToString() + "\n"
-                + " Sucursal: " + getSucursal();
+                + "\n  Clientes:" + getClientesToString()
+                + "\n  Sucursal: " + getSucursal();
     }
 
 }

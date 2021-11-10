@@ -41,8 +41,8 @@ public class CuentaPlazo extends Cuenta {
     @Override
     public String toString() {
         return super.toString() 
-                + " Deposito: " + getDepositoPlazo()
-                + " Intereses: " + getIntereses()
-                + " Vencimiento: " + getFechaVencimiento().toString();
+                + "\n  Deposito: " + getDepositoPlazo()
+                + "\n  Intereses: " + getIntereses()
+                + "\n  Vencimiento: " + getFechaVencimiento().toString();
     }
 }
