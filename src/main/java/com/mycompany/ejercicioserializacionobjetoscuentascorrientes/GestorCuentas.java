@@ -148,7 +148,7 @@ public class GestorCuentas {
         listaOpciones.add(CuentaBuilder.CUENTA_CORRIENTE);
         listaOpciones.add(CuentaBuilder.CUENTA_PLAZO);
         tipoCuenta = EntradasGui.pedirOpcion("Que tipo de cuenta", listaOpciones);
-
+        cuentaBuilder.setTipoCuenta(tipoCuenta);
         //parte de cliente
         do {
             cliente = crearCliente();
@@ -292,7 +292,7 @@ public class GestorCuentas {
                         try {
                             reset();
                         } catch (Exception e) {
-                            System.out.println(e.toString());
+                            JOptionPane.showMessageDialog(null, "Error en guardarFicheroCuentas(): " +e.toString());
                         }
                     }
                 };
@@ -303,7 +303,7 @@ public class GestorCuentas {
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Error al leer el fichero\n" + e.toString());
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error:\n" + e.toString());
+                JOptionPane.showMessageDialog(null, "Error en guardarFicheroCuentas(): " +e.toString());
             } finally {
                 try {
                     oos.close();
@@ -336,8 +336,7 @@ public class GestorCuentas {
                 } catch (FileNotFoundException e) {
                     JOptionPane.showMessageDialog(null, "Error al leer el archivo:\n" + e.toString());
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Error:\n " + e.toString());
-                    System.out.println("Error: \n" + e.toString());
+                    JOptionPane.showMessageDialog(null, "Error en cargarFicherosCuentas(): " + e.toString());
                 } finally {
                     JOptionPane.showMessageDialog(null, "-- Cargadas " + counter + " cuentas. --");
                     try {
@@ -349,7 +348,10 @@ public class GestorCuentas {
             }
         }
     }
-
+    
+    /**
+     * Vacia el array cuentas y lo rellena con cuentas de ejemplo para hacer pruebas.
+     */
     public void demo() {
         int cuentasEliminadas = cuentas.size();
         cuentas.clear();
@@ -369,7 +371,7 @@ public class GestorCuentas {
         try {
             cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("05/02/2026"));
         } catch (Exception e) {
-            System.out.println(e.toString());
+            JOptionPane.showMessageDialog(null, "Error en demo(): " + e.toString());
         }
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
@@ -390,11 +392,19 @@ public class GestorCuentas {
         try {
             cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("21/12/2021"));
         } catch (Exception e) {
-            System.out.println(e.toString());
+           JOptionPane.showMessageDialog(null, "Error en demo():"+ e.toString());
         }
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
-
+        //cuenta 12345A
+        ((CuentaCorriente) cuentas.get(0)).ingresar(1000);
+        ((CuentaCorriente) cuentas.get(0)).retirar(25);
+        ((CuentaCorriente) cuentas.get(0)).ingresar(34);
+        ((CuentaCorriente) cuentas.get(0)).retirar(95);
+        ((CuentaCorriente) cuentas.get(0)).retirar(22);
+        ((CuentaCorriente) cuentas.get(0)).ingresar(33);
+        
+        //cuenta 12345L    
         ((CuentaCorriente) cuentas.get(2)).ingresar(100);
         ((CuentaCorriente) cuentas.get(2)).retirar(25);
         ((CuentaCorriente) cuentas.get(2)).ingresar(150);
@@ -482,7 +492,7 @@ public class GestorCuentas {
                                 listaMovimientos.append(movimiento.toString() + "\n");
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, e);
+                            JOptionPane.showMessageDialog(null, "Error en guardarFicheroCuentas(): " + e.toString());
                         }
                     }
                     if (listaMovimientos.isEmpty()) {

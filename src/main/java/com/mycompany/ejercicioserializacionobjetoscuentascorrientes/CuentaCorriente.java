@@ -46,7 +46,6 @@ public class CuentaCorriente extends Cuenta {
             double cantidad = importe * -1; //pasamos el nº a negativo.
             Movimiento movimiento = new Movimiento(cantidad, getSaldo() + cantidad);
             movimientos.add(movimiento);
-            System.out.println(movimiento.toString());
         }
     }
     

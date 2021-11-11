@@ -73,8 +73,7 @@ public class CuentaBuilder {
     public String getError() {
         return error;
     }
-    
-    
+
     /**
      * Construye y devuelve la cuenta con los parametros especificados
      * anteriormente.
@@ -90,9 +89,10 @@ public class CuentaBuilder {
             error = "No se ha indicado un numero de cuenta -- ";
         } else if (sucursal == null) {
             error = "No se ha indicado una sucursal numero de cuenta -- ";
+        } else if (tipoCuenta == null) {
+            error = "No se ha indicado el tipo de cuenta -- ";
         } else {
             switch (tipoCuenta) {
-                
                 case CUENTA_CORRIENTE:
                     cuenta = new CuentaCorriente(numero, sucursal, clientes);
                     break;
@@ -108,7 +108,7 @@ public class CuentaBuilder {
                         cuenta = new CuentaPlazo(intereses, fechaVencimiento, depositoPlazo, numero, sucursal, clientes);
                     }
                     break;
-                    
+
                 default:
                     error = "No se ha indicado un tipo de cuenta válido: " + tipoCuenta;
                     break;
