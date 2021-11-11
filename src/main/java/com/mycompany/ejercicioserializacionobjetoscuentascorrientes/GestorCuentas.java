@@ -120,6 +120,9 @@ public class GestorCuentas {
         return cliente;
     }
 
+    /**
+     * Pide todos los datos necesarios para crear una cuenta, así como la creación y asignación de clientes
+     */
     public void crearCuenta() {
         boolean comprobacion = false;
         String numeroCuenta = "";
@@ -165,6 +168,9 @@ public class GestorCuentas {
 
     }
 
+    /**
+     * Añade la cuenta creada por el cuentaBuilder a la lista de cuentas.
+     */
     private void guardarCuenta() {
         Cuenta cuenta = cuentaBuilder.getCuenta();
         if (cuenta == null) {
@@ -175,7 +181,10 @@ public class GestorCuentas {
             cuentaBuilder = new CuentaBuilder(); // para destruir el anterior objeto
         }
     }
-
+    
+    /**
+     * Pide y elimina una cuenta si existe.
+     */
     public void cuentaEliminar() {
         String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta a eliminar");
         boolean encontrado = false;
@@ -196,6 +205,9 @@ public class GestorCuentas {
 
     }
 
+    /**
+     * Añade un ingreso o retirada a una cuenta existente
+     */
     public void altaMovimiento() {
         String numeroCuenta = EntradasGui.pedirString("Indíca un número de cuenta para operar.");
         boolean encontrado = false;
@@ -356,24 +368,24 @@ public class GestorCuentas {
         int cuentasEliminadas = cuentas.size();
         cuentas.clear();
         //0
-        cuentaBuilder.addCliente(new Cliente("12345678Z", "john doe", "cualquier sitios"));
+        cuentaBuilder.addCliente(new Cliente("12345678Z", "John Doe", "calle serrano 33 Vigo"));
         cuentaBuilder.setNumero("12345A");
-        cuentaBuilder.setSucursal("florida");
+        cuentaBuilder.setSucursal("Avda. florida 122 Vigo");
         cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_CORRIENTE);
         guardarCuenta();
 
         //1
-        cuentaBuilder.addCliente(new Cliente("53170624Y", "Armando Castro", "calle undostres"));
+        cuentaBuilder.addCliente(new Cliente("53170624Y", "Armando Castro", "Avenida de Galicia 1234 - Vigo"));
         cuentaBuilder.setNumero("32345C");
-        cuentaBuilder.setSucursal("noruega");
+        cuentaBuilder.setSucursal("Sanjurjo Badía 99 - Vigo");
         cuentaBuilder.setIntereses(2.3F);
         cuentaBuilder.setDepositoPlazo(15000L);
+        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         try {
             cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("05/02/2026"));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error en demo(): " + e.toString());
         }
-        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
 
         //2
@@ -384,17 +396,17 @@ public class GestorCuentas {
         guardarCuenta();
 
         //3
-        cuentaBuilder.addCliente(new Cliente("12345679S", "Roberto", "Bruselas"));
+        cuentaBuilder.addCliente(new Cliente("12345679S", "Roberto Roberiño", "Calle de ejemplo 42 - Porriño"));
         cuentaBuilder.setNumero("55345H");
-        cuentaBuilder.setSucursal("noruega");
+        cuentaBuilder.setSucursal("Porriño 123");
         cuentaBuilder.setIntereses(5.4F);
         cuentaBuilder.setDepositoPlazo(20000L);
+        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         try {
             cuentaBuilder.setFechaVencimiento(new SimpleDateFormat("dd/MM/yyyy").parse("21/12/2021"));
         } catch (Exception e) {
            JOptionPane.showMessageDialog(null, "Error en demo():"+ e.toString());
         }
-        cuentaBuilder.setTipoCuenta(CuentaBuilder.CUENTA_PLAZO);
         guardarCuenta();
         //cuenta 12345A
         ((CuentaCorriente) cuentas.get(0)).ingresar(1000);
